@@ -1,0 +1,29 @@
+{
+  "name": "phiKremer/lacyDI",
+  "description": "a DI container and compiler with lacy loading",
+  "minimum-stability": "stable",
+  "license": "GNU GENERAL PUBLIC LICENSE Version 3",
+  "authors": [
+    {
+      "name": "phiKremer"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^7.0"
+  },
+  "require": {
+    "container-interop/container-interop": "^1.2",
+    "ocramius/proxy-manager": "^2.2",
+    "doctrine/annotations": "^1.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Phi\\LacyDI\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Phi\\LacyDITest\\": "test/src/"
+    }
+  }
+}
