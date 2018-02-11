@@ -7,12 +7,9 @@ addons:
     token:
       secure: $SONAR_TOKEN
 before_script:
-  - 'composer install --dev'
+  - 'composer install'
 script:
-  - 'cd test'
-  - 'mkdir reports'
-  - '../vendor/bin/phpunit'
-  - 'cd ..'
-  - 'ls -la test/reports'
+  - 'mkdir test/reports'
+  - 'vendor/bin/phpunit'
   - 'sonar-scanner'
 
