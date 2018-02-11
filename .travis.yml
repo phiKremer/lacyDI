@@ -1,7 +1,14 @@
 language: php
 php:
   - '7.2'
+addons:
+  sonarcloud:
+    organization: $sonar_organization
+    token:
+      secure: $sonar_login
 before_script:
   - 'composer install --dev'
 script:
   - 'cd test && ../vendor/bin/phpunit'
+  - 'sonar-scanner'
+
