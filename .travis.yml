@@ -1,5 +1,7 @@
 language: php
 php:
   - '7.2'
-install:
+before_script:
   - 'composer install --dev'
+script:
+  - 'cd test && ../vendor/bin/phpunit'
