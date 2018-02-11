@@ -13,5 +13,6 @@ script:
   - 'mkdir reports'
   - '../vendor/bin/phpunit'
   - 'cd ..'
+  - 'ls -la test/reports'
   - 'sonar-scanner'
 
