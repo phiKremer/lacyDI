@@ -9,6 +9,9 @@ addons:
 before_script:
   - 'composer install --dev'
 script:
-  - 'cd test && ../vendor/bin/phpunit && cd ..'
+  - 'cd test'
+  - 'mkdir reports'
+  - '../vendor/bin/phpunit'
+  - 'cd ..'
   - 'sonar-scanner'
 
