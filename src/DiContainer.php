@@ -2,33 +2,79 @@
 
 namespace Phi\LacyDI;
 
-use Interop\Container\ContainerInterface;
+use Exception;
+use Phi\LacyDI\Exception\ContainerException;
 use Phi\LacyDI\Exception\NotFoundException;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
-class DiContainer implements ContainerInterface
+class DiContainer implements DiContainerInterface
 {
+    /** @var array */
     private $registry = [];
+
+    /** @var array */
+    private $factories = [];
+
+    /**
+     * add a factory that create objects
+     *
+     * @param DiFactoryInterface $factory
+     */
+    public function addFactory(DiFactoryInterface $factory): void
+    {
+        $this->factories[] = $factory;
+    }
 
     /**
      * {@inheritdoc}
      *
      * @param string $id
      *
-     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
-     * @throws ContainerExceptionInterface Error while retrieving the entry.
+     * @throws ContainerException
+     * @throws NotFoundException
      *
      * @return mixed
      */
     public function get($id)
     {
         if (!isset($this->registry[$id])) {
-            throw new NotFoundException();
+            $this->tryCreateService($id);
         }
         return $this->registry[$id];
     }
 
+    /**
+     * @param string $id
+     *
+     * @throws ContainerException
+     * @throws NotFoundException
+     */
+    private function tryCreateService(string $id): void
+    {
+        try {
+            $this->createServiceViaFactory($id);
+        } catch (Exception $ex) {
+            throw new ContainerException();
+        }
+        if (!isset($this->registry[$id])) {
+            throw new NotFoundException();
+        }
+    }
+
+    /**
+     * @param string $id
+     *
+     * @throws Exception
+     */
+    private function createServiceViaFactory(string $id): void
+    {
+        foreach ($this->factories as $factory) {
+            $service = $factory->factory($this, $id);
+            if (null !== $service) {
+                $this->setService($id, $service);
+                return;
+            }
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -37,22 +83,46 @@ class DiContainer implements ContainerInterface
      *
      * @return bool
      */
-    public function has($id)
+    public function has($id): bool
     {
-        return isset($this->registry[$id]);
+        try {
+            $this->get($id);
+        } catch (NotFoundException | ContainerException $ex) {
+            return false;
+        }
+        return true;
     }
 
     /**
      * Register a service to registry
-     * @param string $name
-     * @param mixed $service
      *
-     * @return bool
+     * @param string $name
+     * @param mixed  $service
+     *
+     * @return void
      */
-    public function setService(string $name, $service) : bool
+    public function setService(string $name, $service): void
     {
         $this->registry[$name] = $service;
-        return true;
+    }
+
+    /**
+     * creates a DiContainer with configured factories
+     *
+     * @param array $config
+     *
+     * @return DiContainer
+     */
+    public static function createFromConfig(array $config) : DiContainer
+    {
+        $container = new DiContainer();
+        foreach ($config as $factoryClass => $factoryConfig) {
+            /** @var DiFactoryInterface $factory */
+            $factory = new $factoryClass();
+            $container->addFactory($factory);
+            $factory->setConfig($factoryConfig);
+        }
+        return $container;
     }
 
 }

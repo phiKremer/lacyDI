@@ -32,7 +32,6 @@
 
     <logging>
         <log type="coverage-clover" target="test/reports/coverage.xml"/>
-        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
         <log type="junit" target="test/reports/logfile.xml"/>
     </logging>
 

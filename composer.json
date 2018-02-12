@@ -1,5 +1,5 @@
 {
-  "name": "phiKremer/lacyDI",
+  "name": "phi-kremer/lacy-di",
   "description": "a DI container and compiler with lacy loading",
   "minimum-stability": "stable",
   "license": "GNU GENERAL PUBLIC LICENSE Version 3",
