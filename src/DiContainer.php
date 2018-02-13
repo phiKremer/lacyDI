@@ -5,6 +5,7 @@ namespace Phi\LacyDI;
 use Exception;
 use Phi\LacyDI\Exception\ContainerException;
 use Phi\LacyDI\Exception\NotFoundException;
+use Phi\LacyDI\Factory\DiFactoryInterface;
 
 class DiContainer implements DiContainerInterface
 {
@@ -120,7 +121,7 @@ class DiContainer implements DiContainerInterface
             /** @var DiFactoryInterface $factory */
             $factory = new $factoryClass();
             $container->addFactory($factory);
-            $factory->setConfig($factoryConfig);
+            $factory->setConfig($container, $factoryConfig);
         }
         return $container;
     }

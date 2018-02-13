@@ -4,7 +4,7 @@ namespace Phi\LacyDITest;
 
 use Phi\LacyDI\DiContainer;
 use Phi\LacyDI\DiContainerInterface;
-use Phi\LacyDI\DiFactoryInterface;
+use Phi\LacyDI\Factory\DiFactoryInterface;
 use Phi\LacyDI\Exception\ContainerException;
 use Phi\LacyDI\Exception\NotFoundException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -118,7 +118,7 @@ class TestFactory implements DiFactoryInterface
 {
     public $config;
 
-    public function setConfig(array $config): void
+    public function setConfig(DiContainerInterface $container, array $config): void
     {
         $this->config = $config;
     }
