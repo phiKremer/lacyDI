@@ -4,5 +4,12 @@ namespace Phi\LacyDI;
 
 interface DiCompilerInterface
 {
-    public function compile($className);
+    /**
+     * creates an onject from given class name and inject all objects
+     *
+     * @param string $className
+     *
+     * @return mixed
+     */
+    public function compile(string $className);
 }

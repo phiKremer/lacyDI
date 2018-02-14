@@ -1,0 +1,3 @@
+
+
+sonar-scanner.bat -Dsonar.login=538f68d693875deb3bb00b88596c746c7736e7a5 -Dsonar.organization=phikremer-github

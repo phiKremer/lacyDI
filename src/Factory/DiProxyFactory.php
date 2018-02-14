@@ -40,9 +40,9 @@ class DiProxyFactory implements DiFactoryInterface
      * @param DiContainerInterface $container
      * @param string               $id
      *
-     * @return mixed|null|\ProxyManager\Proxy\VirtualProxyInterface
+     * @return object
      */
-    public function factory(DiContainerInterface $container, string $id)
+    public function factory(DiContainerInterface $container, string $id) : object
     {
         $className = $id;
         if (isset($this->config[$className])) {
@@ -52,10 +52,11 @@ class DiProxyFactory implements DiFactoryInterface
     }
 
     /**
-     * @param $className
-     * @return \ProxyManager\Proxy\VirtualProxyInterface
+     * @param string $className
+     *
+     * @return object
      */
-    private function createProxy($className)
+    private function createProxy(string $className) : object
     {
         return $this->proxyFactory->createProxy(
             $className,
